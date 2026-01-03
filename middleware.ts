@@ -2,15 +2,15 @@ import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
 
 export function middleware(req: NextRequest) {
-  const token = req.cookies.get("token")?.value || req.headers.get("authorization")
+  // Only check for cookie-based auth (for server-side)
+  // Client-side auth (localStorage) is handled in the layout component
+  const token = req.cookies.get("token")?.value
   const { pathname } = req.nextUrl
 
   if (pathname.startsWith("/app")) {
-    if (!token) {
-      const url = req.nextUrl.clone()
-      url.pathname = "/login"
-      return NextResponse.redirect(url)
-    }
+    // Allow the request to proceed - client-side will handle redirect if needed
+    // The cookie is optional since we're using localStorage + Authorization header
+    return NextResponse.next()
   }
 
   return NextResponse.next()

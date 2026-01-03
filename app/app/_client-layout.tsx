@@ -30,6 +30,13 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   useEffect(() => {
     const checkAuth = async () => {
       try {
+        // First check if token exists in localStorage
+        const token = localStorage.getItem("token")
+        if (!token) {
+          router.push("/login")
+          return
+        }
+        
         const userData = await authService.getMe()
         if (!userData) {
           router.push("/login")
