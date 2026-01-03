@@ -40,4 +40,8 @@ export const filesService = {
   async restoreFile(id: string) {
     return api.post(`/files/${id}/restore`)
   },
+
+  async permanentlyDeleteFile(id: string) {
+    return api.delete(`/files/${id}/permanent`)
+  },
 }

@@ -61,4 +61,8 @@ export const foldersService = {
   async restoreFolder(id: string) {
     return api.post(`/folders/${id}/restore`)
   },
+
+  async permanentlyDeleteFolder(id: string) {
+    return api.delete(`/folders/${id}/permanent`)
+  },
 }

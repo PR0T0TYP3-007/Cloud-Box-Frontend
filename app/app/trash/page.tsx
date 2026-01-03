@@ -65,19 +65,36 @@ export default function TrashPage() {
                   {folders.map((f) => (
                     <li key={f.id} className="p-2 border rounded flex items-center justify-between">
                       <span>{f.name}</span>
-                      <button
-                        className="text-sm text-primary"
-                        onClick={async () => {
-                          try {
-                            await foldersService.restoreFolder(f.id)
-                            await loadTrash()
-                          } catch (err) {
-                            console.error('Failed to restore folder', err)
-                          }
-                        }}
-                      >
-                        Restore
-                      </button>
+                      <div className="flex gap-2">
+                        <button
+                          className="text-sm text-primary hover:underline"
+                          onClick={async () => {
+                            try {
+                              await foldersService.restoreFolder(f.id)
+                              await loadTrash()
+                            } catch (err) {
+                              console.error('Failed to restore folder', err)
+                            }
+                          }}
+                        >
+                          Restore
+                        </button>
+                        <button
+                          className="text-sm text-destructive hover:underline"
+                          onClick={async () => {
+                            if (confirm(`Permanently delete "${f.name}"? This cannot be undone.`)) {
+                              try {
+                                await foldersService.permanentlyDeleteFolder(f.id)
+                                await loadTrash()
+                              } catch (err) {
+                                console.error('Failed to permanently delete folder', err)
+                              }
+                            }
+                          }}
+                        >
+                          Delete Forever
+                        </button>
+                      </div>
                     </li>
                   ))}
                 </ul>
@@ -90,19 +107,36 @@ export default function TrashPage() {
                   {files.map((fi) => (
                     <li key={fi.id} className="p-2 border rounded flex items-center justify-between">
                       <span>{fi.name}</span>
-                      <button
-                        className="text-sm text-primary"
-                        onClick={async () => {
-                          try {
-                            await filesService.restoreFile(fi.id)
-                            await loadTrash()
-                          } catch (err) {
-                            console.error('Failed to restore file', err)
-                          }
-                        }}
-                      >
-                        Restore
-                      </button>
+                      <div className="flex gap-2">
+                        <button
+                          className="text-sm text-primary hover:underline"
+                          onClick={async () => {
+                            try {
+                              await filesService.restoreFile(fi.id)
+                              await loadTrash()
+                            } catch (err) {
+                              console.error('Failed to restore file', err)
+                            }
+                          }}
+                        >
+                          Restore
+                        </button>
+                        <button
+                          className="text-sm text-destructive hover:underline"
+                          onClick={async () => {
+                            if (confirm(`Permanently delete "${fi.name}"? This cannot be undone.`)) {
+                              try {
+                                await filesService.permanentlyDeleteFile(fi.id)
+                                await loadTrash()
+                              } catch (err) {
+                                console.error('Failed to permanently delete file', err)
+                              }
+                            }
+                          }}
+                        >
+                          Delete Forever
+                        </button>
+                      </div>
                     </li>
                   ))}
                 </ul>
