@@ -25,9 +25,12 @@ export default function LoginPage() {
     setError("")
 
     try {
-      await authService.signIn(email, password)
+      console.log("API URL:", process.env.NEXT_PUBLIC_API_URL)
+      const result = await authService.signIn(email, password)
+      console.log("Login successful:", result)
       router.push("/app")
     } catch (err) {
+      console.error("Login error:", err)
       setError("Invalid email or password")
     } finally {
       setLoading(false)
