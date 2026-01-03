@@ -18,11 +18,17 @@ export const authService = {
 
   async signIn(email: string, password: string) {
     const data = await api.post("/auth/signin", { email, password })
+    if (data?.token) {
+      localStorage.setItem("token", data.token)
+    }
     return data
   },
 
   async signUp(email: string, password: string) {
     const data = await api.post("/auth/signup", { email, password })
+    if (data?.token) {
+      localStorage.setItem("token", data.token)
+    }
     return data
   },
 
@@ -30,7 +36,10 @@ export const authService = {
     try {
       await api.post("/auth/signout")
     } finally {
-      if (typeof window !== "undefined") window.location.href = "/login"
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("token")
+        window.location.href = "/login"
+      }
     }
   },
 

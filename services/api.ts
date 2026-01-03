@@ -11,11 +11,13 @@ export class ApiError extends Error {
 }
 
 async function fetchWithAuth(url: string, options: RequestInit = {}) {
+  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null
   const response = await fetch(`${API_BASE_URL}${url}`, {
     ...options,
     credentials: "include",
     headers: {
       ...(options.headers || {}),
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
     },
   })
 
